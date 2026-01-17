@@ -1,0 +1,39 @@
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: var(--color-primary);
+  color: white;
+  padding: var(--spacing-md);
+  box-shadow: var(--box-shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-info {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+  color: white;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+main {
+  flex: 1;
+  padding: var(--spacing-md);
+}
+
+footer {
+  background: #f5f5f5;
+  padding: var(--spacing-md);
+  text-align: center;
+  color: #666;
+}

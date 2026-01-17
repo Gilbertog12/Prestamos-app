@@ -1,0 +1,34 @@
+<div class="dashboard">
+  <h2>Dashboard</h2>
+  <p>!Bienvenido al sistema de gestion de Prestamos!</p>
+
+  <div class="test-section">
+    <h3>Probar Conexión Firebase</h3>
+    <button (click)="testFirebase()">Probar Firestore</button>
+    @if(testResult){
+
+    <p>{{ testResult }}</p>
+
+    }
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <h3>Total Prestado</h3>
+      <p class="stat-value">$0</p>
+    </div>
+
+    <div class="stat-card">
+      <h3>Total por cobrar</h3>
+      <p class="stat-value">$0</p>
+    </div>
+    <div class="stat-card">
+      <h3>Prestamos activos</h3>
+      <p class="stat-value">$0</p>
+    </div>
+    <div class="stat-card">
+      <h3>Prestamos Vencidos</h3>
+      <p class="stat-value">$0</p>
+    </div>
+  </div>
+</div>

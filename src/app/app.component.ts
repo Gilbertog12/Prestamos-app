@@ -1,12 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { MatButton } from '@angular/material/button';
+import { AuthService } from './core/services/auth.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, MatButton],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'prestamos-app';
+
+  authService = inject(AuthService);
+
+  isLoggedIn = this.authService.isLoggedIn;
+  userEmail = computed(() => this.authService.currentUser()?.email ?? '');
+
+  async logout() {
+    this.authService.logout();
+  }
 }
