@@ -1,0 +1,103 @@
+<div class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        @if (esEdicion()) {
+          <h2>Editar Cliente</h2>
+        } @else {
+          <h2>Nuevo Cliente</h2>
+        }
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="clienteForm" (ngSubmit)="onSubmit()">
+        <!-- Nombre -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nombre Completo</mat-label>
+          <input matInput formControlName="nombre" placeholder="Juan Pérez" />
+
+          @if (
+            clienteForm.get("nombre")?.hasError("required") &&
+            clienteForm.get("nombre")?.touched
+          ) {
+            <mat-error>El nombre es requerido</mat-error>
+          }
+          @if (clienteForm.get("nombre")?.hasError("minlength")) {
+            <mat-error>Mínimo 3 caracteres</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Cédula -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Cédula</mat-label>
+          <input matInput formControlName="cedula" placeholder="1234567890" />
+
+          @if (
+            clienteForm.get("cedula")?.hasError("required") &&
+            clienteForm.get("cedula")?.touched
+          ) {
+            <mat-error>La cédula es requerida</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Teléfono -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Teléfono</mat-label>
+          <input matInput formControlName="telefono" placeholder="3001234567" />
+
+          @if (
+            clienteForm.get("telefono")?.hasError("required") &&
+            clienteForm.get("telefono")?.touched
+          ) {
+            <mat-error>El teléfono es requerido</mat-error>
+          }
+          @if (clienteForm.get("telefono")?.hasError("pattern")) {
+            <mat-error>Debe ser un número de 10 dígitos</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Email -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="correo@ejemplo.com"
+          />
+
+          @if (clienteForm.get("email")?.hasError("email")) {
+            <mat-error>Email inválido</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- TODO: Agregar más campos (dirección, ciudad, etc.) -->
+
+        <!-- Activo -->
+        <mat-checkbox formControlName="activo"> Cliente Activo </mat-checkbox>
+
+        <!-- Botones -->
+        <div class="button-row">
+          <button mat-raised-button type="button" (click)="cancelar()">
+            Cancelar
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="clienteForm.invalid || loading()"
+          >
+            @if (loading()) {
+              Guardando...
+            } @else if (esEdicion()) {
+              Actualizar
+            } @else {
+              Guardar
+            }
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

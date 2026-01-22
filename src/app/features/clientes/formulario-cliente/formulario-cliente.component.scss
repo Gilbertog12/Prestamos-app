@@ -1,0 +1,21 @@
+.container {
+  padding: var(--spacing-md);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: var(--spacing-md);
+}
+
+.button-row {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: flex-end;
+  margin-top: var(--spacing-lg);
+}
+
+mat-checkbox {
+  margin-bottom: var(--spacing-md);
+}

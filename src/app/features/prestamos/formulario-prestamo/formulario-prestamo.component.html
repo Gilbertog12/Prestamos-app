@@ -1,0 +1,169 @@
+<div class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <h2>Nuevo Préstamo</h2>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="prestamoForm" (ngSubmit)="onSubmit()">
+        <!-- Selector de Cliente -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Cliente</mat-label>
+          <mat-select formControlName="clienteId">
+            @for (cliente of clientes(); track cliente.id) {
+              <mat-option [value]="cliente.id">
+                {{ cliente.nombre }} - {{ cliente.cedula }}
+              </mat-option>
+            }
+          </mat-select>
+
+          @if (
+            prestamoForm.get("clienteId")?.hasError("required") &&
+            prestamoForm.get("clienteId")?.touched
+          ) {
+            <mat-error>Selecciona un cliente</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Capital -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Capital (Monto a Prestar)</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="capital"
+            placeholder="1000000"
+          />
+          <span matPrefix>$&nbsp;</span>
+
+          @if (
+            prestamoForm.get("capital")?.hasError("required") &&
+            prestamoForm.get("capital")?.touched
+          ) {
+            <mat-error>El capital es requerido</mat-error>
+          }
+          @if (prestamoForm.get("capital")?.hasError("min")) {
+            <mat-error>Mínimo $10,000</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Tasa de Interés -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Tasa de Interés Mensual</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="tasaPorcentaje"
+            placeholder="5"
+            step="0.1"
+          />
+          <span matSuffix>%</span>
+
+          @if (
+            prestamoForm.get("tasaPorcentaje")?.hasError("required") &&
+            prestamoForm.get("tasaPorcentaje")?.touched
+          ) {
+            <mat-error>La tasa es requerida</mat-error>
+          }
+          @if (prestamoForm.get("tasaPorcentaje")?.hasError("min")) {
+            <mat-error>Mínimo 0.1%</mat-error>
+          }
+          @if (prestamoForm.get("tasaPorcentaje")?.hasError("max")) {
+            <mat-error>Máximo 20%</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Plazo -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Plazo</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="plazoMeses"
+            placeholder="4"
+          />
+          <span matSuffix>meses</span>
+
+          @if (
+            prestamoForm.get("plazoMeses")?.hasError("required") &&
+            prestamoForm.get("plazoMeses")?.touched
+          ) {
+            <mat-error>El plazo es requerido</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Número de Cuotas -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Número de Cuotas</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="numeroCuotas"
+            placeholder="4"
+          />
+
+          @if (
+            prestamoForm.get("numeroCuotas")?.hasError("required") &&
+            prestamoForm.get("numeroCuotas")?.touched
+          ) {
+            <mat-error>El número de cuotas es requerido</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- Resumen del Cálculo -->
+        @if (calculoActual()) {
+          <div class="calculo-summary">
+            <h3>Resumen del Préstamo</h3>
+            <div class="summary-grid">
+              <div class="summary-item">
+                <span class="label">Capital:</span>
+                <span class="value">{{
+                  formatearMoneda(calculoActual().capital)
+                }}</span>
+              </div>
+              <div class="summary-item">
+                <span class="label">Interés Total:</span>
+                <span class="value">{{
+                  formatearMoneda(calculoActual().interesTotal)
+                }}</span>
+              </div>
+              <div class="summary-item">
+                <span class="label">Total a Pagar:</span>
+                <span class="value primary">{{
+                  formatearMoneda(calculoActual().totalAPagar)
+                }}</span>
+              </div>
+              <div class="summary-item">
+                <span class="label">Valor Cuota:</span>
+                <span class="value success">{{
+                  formatearMoneda(calculoActual().valorCuota)
+                }}</span>
+              </div>
+            </div>
+          </div>
+        }
+
+        <!-- Botones -->
+        <div class="button-row">
+          <button mat-raised-button type="button" (click)="cancelar()">
+            Cancelar
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="prestamoForm.invalid || loading()"
+          >
+            @if (loading()) {
+              Creando...
+            } @else {
+              Crear Préstamo
+            }
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

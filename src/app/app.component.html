@@ -3,10 +3,16 @@
     <h1>Sistema de Gestión de Préstamos</h1>
 
     @if (isLoggedIn()) {
-    <div class="user-info">
-      <span>{{ userEmail() }}</span>
-      <button mat-button (click)="logout()">Cerrar Sesíon</button>
-    </div>
+      <nav>
+        <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+        <a routerLink="/clientes" routerLinkActive="active">Clientes</a>
+        <a routerLink="/prestamos" routerLinkActive="active">Prestamos</a>
+      </nav>
+
+      <div class="user-info">
+        <span>{{ userEmail() }}</span>
+        <button mat-button (click)="logout()">Cerrar Sesión</button>
+      </div>
     }
   </header>
 
