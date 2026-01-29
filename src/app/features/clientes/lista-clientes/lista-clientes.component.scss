@@ -60,3 +60,99 @@ mat-card-header {
     margin-bottom: var(--spacing-md);
   }
 }
+
+// Responsive Mobile
+@media (max-width: 768px) {
+  .container {
+    padding: var(--spacing-sm);
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  // Ocultar tabla en móvil
+  .table-container {
+    display: none;
+  }
+
+  // Mostrar cards en móvil
+  .mobile-cards {
+    display: block !important;
+  }
+}
+
+// Cards para móvil (ocultos por defecto)
+.mobile-cards {
+  display: none;
+  gap: var(--spacing-md);
+}
+
+.client-card {
+  background: white;
+  border-radius: 8px;
+  padding: var(--spacing-md);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .client-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: var(--spacing-sm);
+
+    h3 {
+      margin: 0;
+      color: #333;
+      font-size: 18px;
+    }
+
+    .status-chip {
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+
+      &.activo {
+        background: #e8f5e9;
+        color: #4caf50;
+      }
+
+      &.inactivo {
+        background: #ffebee;
+        color: #f44336;
+      }
+    }
+  }
+
+  .client-info {
+    display: grid;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+
+      .label {
+        color: #666;
+        font-weight: 500;
+      }
+
+      .value {
+        color: #333;
+      }
+    }
+  }
+
+  .client-actions {
+    display: flex;
+    gap: var(--spacing-xs);
+    justify-content: flex-end;
+
+    button {
+      flex: 1;
+      max-width: 100px;
+    }
+  }
+}

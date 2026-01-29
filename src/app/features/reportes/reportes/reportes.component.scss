@@ -1,0 +1,39 @@
+.reportes-container {
+  padding: var(--spacing-md);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header-card {
+  margin-bottom: var(--spacing-lg);
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.filtros-row {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+  flex-wrap: wrap;
+
+  mat-form-field {
+    min-width: 200px;
+  }
+}
+
+.tab-content {
+  padding: var(--spacing-lg) 0;
+}
+
+@media (max-width: 768px) {
+  .filtros-row {
+    flex-direction: column;
+    align-items: stretch;
+
+    mat-form-field {
+      width: 100%;
+    }
+  }
+}

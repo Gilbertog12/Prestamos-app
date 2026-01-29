@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { ClientesService } from '../../../core/services/clientes.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { cliente } from '../../../core/models/clientes.interface';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,6 +21,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatCardModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
+    RouterLink,
   ],
   templateUrl: './lista-clientes.component.html',
   styleUrl: './lista-clientes.component.scss',

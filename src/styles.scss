@@ -108,3 +108,44 @@ body {
 .mb-4 {
   margin-bottom: var(--spacing-lg);
 }
+// Mobile Improvements
+@media (max-width: 768px) {
+  // Botones más grandes
+  .mat-mdc-raised-button,
+  .mat-mdc-button {
+    min-height: 44px !important;
+    font-size: 16px !important;
+  }
+
+  // Form fields más grandes
+  .mat-mdc-form-field {
+    font-size: 16px !important;
+
+    input,
+    textarea,
+    select {
+      font-size: 16px !important;
+    }
+  }
+
+  // Cards más compactos
+  .mat-mdc-card {
+    margin: var(--spacing-sm) !important;
+  }
+
+  // Tablas con scroll
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 600px;
+  }
+
+  // Diálogos full screen en móvil
+  .mat-mdc-dialog-container {
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+  }
+}

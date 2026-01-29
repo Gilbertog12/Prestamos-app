@@ -8,7 +8,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Prestamo } from '../../../core/models/prestamo.interface';
 import { PrestamosService } from '../../../core/services/prestamos.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { MatChipsModule } from '@angular/material/chips';
+import { formatearMoneda } from '../../../core/utils/calculos-prestamo';
 
 @Component({
   selector: 'app-lista-prestamos',
@@ -20,6 +22,8 @@ import { Router } from '@angular/router';
     MatCardModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
+    RouterLink,
+    MatChipsModule,
   ],
   templateUrl: './lista-prestamos.component.html',
   styleUrl: './lista-prestamos.component.scss',
@@ -43,6 +47,8 @@ export class ListaPrestamosComponent {
   loading = this.prestamoService.loading;
   prestamos = this.prestamoService.prestamos;
 
+  formatearMoneda = formatearMoneda;
+
   async ngOnInit(): Promise<void> {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
@@ -64,9 +70,15 @@ export class ListaPrestamosComponent {
     //TODO pensar si implementar
   }
 
-  eliminarPrestamo(Prestamo: Prestamo) {
+  async eliminarPrestamo(Prestamo: Prestamo) {
     const confirmar = confirm(
       `¿Seguro que deseas eliminar el prestamo a  ${Prestamo.clienteNombre} por ${Prestamo.totalAPagar}?\n\nEsta acción no se puede deshacer.`,
     );
+
+    if (!confirmar) {
+      return;
+    }
+
+    await this.prestamoService.eliminar(Prestamo.id);
   }
 }

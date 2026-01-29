@@ -1,0 +1,111 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Reporte de Préstamos</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    @if (loading()) {
+      <div class="loading">Cargando datos...</div>
+    }
+
+    @if (!loading() && prestamosFiltrados().length > 0) {
+      <div class="resumen-grid">
+        <div class="resumen-item">
+          <span class="label">Préstamos</span>
+          <span class="value">{{ resumen().cantidad }}</span>
+        </div>
+        <div class="resumen-item">
+          <span class="label">Capital</span>
+          <span class="value">{{
+            formatearMoneda(resumen().totalCapital)
+          }}</span>
+        </div>
+        <div class="resumen-item">
+          <span class="label">Intereses</span>
+          <span class="value">{{
+            formatearMoneda(resumen().totalIntereses)
+          }}</span>
+        </div>
+        <div class="resumen-item">
+          <span class="label">Total a Pagar</span>
+          <span class="value primary">{{
+            formatearMoneda(resumen().totalAPagar)
+          }}</span>
+        </div>
+        <div class="resumen-item">
+          <span class="label">Saldo Pendiente</span>
+          <span class="value warning">{{
+            formatearMoneda(resumen().totalPendiente)
+          }}</span>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table mat-table [dataSource]="prestamosFiltrados()">
+          <ng-container matColumnDef="cliente">
+            <th mat-header-cell *matHeaderCellDef>Cliente</th>
+            <td mat-cell *matCellDef="let p">{{ p.clienteNombre }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="capital">
+            <th mat-header-cell *matHeaderCellDef>Capital</th>
+            <td mat-cell *matCellDef="let p">
+              {{ formatearMoneda(p.capital) }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef>Total</th>
+            <td mat-cell *matCellDef="let p">
+              {{ formatearMoneda(p.totalAPagar) }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="saldo">
+            <th mat-header-cell *matHeaderCellDef>Saldo</th>
+            <td mat-cell *matCellDef="let p">
+              {{ formatearMoneda(p.saldoPendiente) }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="estado">
+            <th mat-header-cell *matHeaderCellDef>Estado</th>
+            <td mat-cell *matCellDef="let p">
+              <mat-chip [class]="'estado-' + p.estado">
+                {{ p.estado }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="fecha">
+            <th mat-header-cell *matHeaderCellDef>Fecha</th>
+            <td mat-cell *matCellDef="let p">
+              {{ p.fechaPrestamo | date: "dd/MM/yyyy" }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </div>
+
+      <div class="export-buttons">
+        <button mat-raised-button color="accent" (click)="exportarAExcel()">
+          <mat-icon>file_download</mat-icon>
+          Exportar a Excel
+        </button>
+        <button mat-raised-button color="accent" (click)="exportarAPDF()">
+          <mat-icon>picture_as_pdf</mat-icon>
+          Exportar a PDF
+        </button>
+      </div>
+    }
+
+    @if (!loading() && prestamosFiltrados().length === 0) {
+      <div class="empty-state">
+        <mat-icon>search_off</mat-icon>
+        <p>No hay préstamos en el período seleccionado</p>
+      </div>
+    }
+  </mat-card-content>
+</mat-card>

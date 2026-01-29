@@ -1,0 +1,139 @@
+<p>formulario-pago works!</p>
+<div class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        <h2>Registrar Pago</h2>
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <!-- ============================================ -->
+      <!-- SECCIÓN 1: INFORMACIÓN DEL PRÉSTAMO -->
+      <!-- ============================================ -->
+      @if (prestamo()) {
+        <div class="prestamo-info">
+          <h3>Préstamo de {{ prestamo()?.clienteNombre }}</h3>
+
+          <div class="info-grid">
+            <!-- Total del Préstamo -->
+            <div class="info-item">
+              <span class="label">Total del Préstamo:</span>
+              <span class="value">
+                {{ formatearMoneda(prestamo()!.totalAPagar) }}
+              </span>
+            </div>
+
+            <!-- Saldo Pendiente (IMPORTANTE - Destacado) -->
+            <div class="info-item">
+              <span class="label">Saldo Pendiente:</span>
+              <span class="value warning">
+                {{ formatearMoneda(prestamo()!.saldoPendiente) }}
+              </span>
+            </div>
+
+            <!-- Valor de Cuota (Referencia) -->
+            <div class="info-item">
+              <span class="label">Valor de Cuota:</span>
+              <span class="value">
+                {{ formatearMoneda(prestamo()!.valorCuota) }}
+              </span>
+            </div>
+          </div>
+        </div>
+      }
+
+      <!-- ============================================ -->
+      <!-- SECCIÓN 2: FORMULARIO DE PAGO -->
+      <!-- ============================================ -->
+      <form [formGroup]="pagoForm" (ngSubmit)="onSubmit()">
+        <!-- CAMPO 1: MONTO DEL PAGO -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Monto del Pago</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="monto"
+            placeholder="300000"
+          />
+          <span matPrefix>$&nbsp;</span>
+
+          <!-- Error: Campo requerido -->
+          @if (
+            pagoForm.get("monto")?.hasError("required") &&
+            pagoForm.get("monto")?.touched
+          ) {
+            <mat-error>El monto es requerido</mat-error>
+          }
+
+          <!-- Error: Monto mínimo -->
+          @if (pagoForm.get("monto")?.hasError("min")) {
+            <mat-error>El monto debe ser mayor a cero</mat-error>
+          }
+
+          <!-- Error: Excede saldo pendiente -->
+          @if (pagoForm.get("monto")?.hasError("max")) {
+            <mat-error>
+              El pago no puede exceder el saldo pendiente ({{
+                formatearMoneda(prestamo()!.saldoPendiente)
+              }})
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <!-- CAMPO 2: MÉTODO DE PAGO -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Método de Pago</mat-label>
+          <mat-select formControlName="metodoPago">
+            <mat-option value="efectivo">Efectivo</mat-option>
+            <mat-option value="transferencia">Transferencia</mat-option>
+            <mat-option value="cheque">Cheque</mat-option>
+            <mat-option value="otro">Otro</mat-option>
+          </mat-select>
+
+          @if (
+            pagoForm.get("metodoPago")?.hasError("required") &&
+            pagoForm.get("metodoPago")?.touched
+          ) {
+            <mat-error>Selecciona un método de pago</mat-error>
+          }
+        </mat-form-field>
+
+        <!-- CAMPO 3: OBSERVACIONES (OPCIONAL) -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Observaciones (Opcional)</mat-label>
+          <textarea
+            matInput
+            formControlName="observaciones"
+            rows="3"
+            placeholder="Notas adicionales sobre el pago..."
+          ></textarea>
+        </mat-form-field>
+
+        <!-- ============================================ -->
+        <!-- SECCIÓN 3: BOTONES DE ACCIÓN -->
+        <!-- ============================================ -->
+        <div class="button-row">
+          <!-- Botón Cancelar -->
+          <button mat-raised-button type="button" (click)="cancelar()">
+            Cancelar
+          </button>
+
+          <!-- Botón Registrar Pago -->
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="pagoForm.invalid || loading()"
+          >
+            @if (loading()) {
+              Registrando...
+            } @else {
+              Registrar Pago
+            }
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

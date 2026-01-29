@@ -60,3 +60,83 @@ mat-card-header {
     margin-bottom: var(--spacing-md);
   }
 }
+
+@media (max-width: 768px) {
+  .container {
+    padding: var(--spacing-sm);
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .table-container {
+    display: none;
+  }
+
+  .mobile-cards {
+    display: block !important;
+  }
+}
+
+.mobile-cards {
+  display: none;
+  gap: var(--spacing-md);
+}
+
+.prestamo-card {
+  background: white;
+  border-radius: 8px;
+  padding: var(--spacing-md);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  .prestamo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: var(--spacing-sm);
+
+    h3 {
+      margin: 0;
+      color: #333;
+      font-size: 18px;
+    }
+  }
+
+  .prestamo-amount {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--color-primary);
+    margin: var(--spacing-sm) 0;
+  }
+
+  .prestamo-info {
+    display: grid;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-md);
+    font-size: 14px;
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+
+      .label {
+        color: #666;
+      }
+
+      .value {
+        color: #333;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .prestamo-actions {
+    display: flex;
+    gap: var(--spacing-xs);
+
+    button {
+      flex: 1;
+    }
+  }
+}

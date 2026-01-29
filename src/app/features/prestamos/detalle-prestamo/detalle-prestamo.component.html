@@ -1,0 +1,228 @@
+<div class="container">
+  <!-- ============================================ -->
+  <!-- LOADING STATE -->
+  <!-- ============================================ -->
+  @if (loading()) {
+    <div class="loading">
+      <p>Cargando información...</p>
+    </div>
+  }
+
+  <!-- ============================================ -->
+  <!-- CONTENIDO PRINCIPAL -->
+  <!-- ============================================ -->
+  @if (!loading() && prestamo()) {
+    <!-- ============================================ -->
+    <!-- CARD 1: INFORMACIÓN DEL PRÉSTAMO -->
+    <!-- ============================================ -->
+    <mat-card class="prestamo-card">
+      <mat-card-header>
+        <mat-card-title>
+          <div class="title-row">
+            <h2>Detalle del Préstamo</h2>
+
+            <!-- Badge de Estado -->
+            @if (prestamo()?.estado === "activo") {
+              <mat-chip class="estado-chip activo">Activo</mat-chip>
+            }
+            @if (prestamo()?.estado === "pagado") {
+              <mat-chip class="estado-chip pagado">Pagado</mat-chip>
+            }
+            @if (prestamo()?.estado === "vencido") {
+              <mat-chip class="estado-chip vencido">Vencido</mat-chip>
+            }
+          </div>
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <!-- Información del Cliente -->
+        <div class="section">
+          <h3>Cliente</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Nombre:</span>
+              <span class="value">{{ prestamo()?.clienteNombre }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Cédula:</span>
+              <span class="value">{{ prestamo()?.clienteCedula }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Información del Préstamo -->
+        <div class="section">
+          <h3>Detalles del Préstamo</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">Capital:</span>
+              <span class="value">{{
+                formatearMoneda(prestamo()!.capital)
+              }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Tasa de Interés:</span>
+              <span class="value"
+                >{{ (prestamo()!.tasaInteres * 100).toFixed(1) }}%</span
+              >
+            </div>
+            <div class="info-item">
+              <span class="label">Plazo:</span>
+              <span class="value">{{ prestamo()?.plazoMeses }} meses</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Número de Cuotas:</span>
+              <span class="value">{{ prestamo()?.numeroCuotas }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Interés Total:</span>
+              <span class="value">{{
+                formatearMoneda(prestamo()!.interesTotal)
+              }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Valor de Cuota:</span>
+              <span class="value">{{
+                formatearMoneda(prestamo()!.valorCuota)
+              }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resumen Financiero -->
+        <div class="section resumen">
+          <h3>Resumen Financiero</h3>
+          <div class="resumen-grid">
+            <div class="resumen-item">
+              <span class="label">Total a Pagar:</span>
+              <span class="value total">{{
+                formatearMoneda(prestamo()!.totalAPagar)
+              }}</span>
+            </div>
+            <div class="resumen-item">
+              <span class="label">Total Pagado:</span>
+              <span class="value pagado">{{
+                formatearMoneda(totalPagado())
+              }}</span>
+            </div>
+            <div class="resumen-item">
+              <span class="label">Saldo Pendiente:</span>
+              <span class="value pendiente">{{
+                formatearMoneda(prestamo()!.saldoPendiente)
+              }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fechas -->
+        <div class="section">
+          <h3>Fechas</h3>
+          <div class="info-grid">
+            <!-- Fechas del préstamo -->
+            <div class="info-item">
+              <span class="label">Fecha de Préstamo:</span>
+              <span class="value">
+                {{ prestamo()?.fechaPrestamo | date: "dd/MM/yyyy" }}
+              </span>
+            </div>
+
+            <div class="info-item">
+              <span class="label">Fecha de Vencimiento:</span>
+              <span class="value">
+                {{ prestamo()?.fechaVencimiento | date: "dd/MM/yyyy" }}
+              </span>
+            </div>
+
+            <!-- Tabla de pagos -->
+            <td mat-cell *matCellDef="let pago">
+              {{ pago.fecha | date: "dd/MM/yyyy HH:mm" }}
+            </td>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="registrarPago()"
+          [disabled]="prestamo()?.estado === 'pagado'"
+        >
+          <mat-icon>add</mat-icon>
+          Registrar Pago
+        </button>
+        <button mat-button routerLink="/prestamos">Volver a Lista</button>
+      </mat-card-actions>
+    </mat-card>
+
+    <!-- ============================================ -->
+    <!-- CARD 2: HISTORIAL DE PAGOS -->
+    <!-- ============================================ -->
+    <mat-card class="pagos-card">
+      <mat-card-header>
+        <mat-card-title>
+          <h2>Historial de Pagos ({{ pagos().length }})</h2>
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <!-- Si NO hay pagos -->
+        @if (pagos().length === 0) {
+          <div class="empty-state">
+            <mat-icon>payments</mat-icon>
+            <p>No hay pagos registrados</p>
+            <button mat-raised-button color="primary" (click)="registrarPago()">
+              Registrar Primer Pago
+            </button>
+          </div>
+        }
+
+        <!-- Si HAY pagos -->
+        @if (pagos().length > 0) {
+          <div class="table-container">
+            <table mat-table [dataSource]="pagos()">
+              <!-- Columna: Fecha -->
+              <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef>Fecha</th>
+                <td mat-cell *matCellDef="let pago">
+                  {{ pago.fecha.toDate?.() | date: "dd/MM/yyyy HH:mm" }}
+                </td>
+              </ng-container>
+
+              <!-- Columna: Monto -->
+              <ng-container matColumnDef="monto">
+                <th mat-header-cell *matHeaderCellDef>Monto</th>
+                <td mat-cell *matCellDef="let pago">
+                  <strong>{{ formatearMoneda(pago.monto) }}</strong>
+                </td>
+              </ng-container>
+
+              <!-- Columna: Método de Pago -->
+              <ng-container matColumnDef="metodoPago">
+                <th mat-header-cell *matHeaderCellDef>Método</th>
+                <td mat-cell *matCellDef="let pago">
+                  <mat-chip class="metodo-chip">
+                    {{ pago.metodoPago | titlecase }}
+                  </mat-chip>
+                </td>
+              </ng-container>
+
+              <!-- Columna: Observaciones -->
+              <ng-container matColumnDef="observaciones">
+                <th mat-header-cell *matHeaderCellDef>Observaciones</th>
+                <td mat-cell *matCellDef="let pago">
+                  {{ pago.observaciones || "-" }}
+                </td>
+              </ng-container>
+
+              <!-- Renderizar filas -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            </table>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

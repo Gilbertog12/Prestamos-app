@@ -1,34 +1,119 @@
-<div class="dashboard">
-  <h2>Dashboard</h2>
-  <p>!Bienvenido al sistema de gestion de Prestamos!</p>
-
-  <div class="test-section">
-    <h3>Probar Conexión Firebase</h3>
-    <button (click)="testFirebase()">Probar Firestore</button>
-    @if(testResult){
-
-    <p>{{ testResult }}</p>
-
-    }
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Dashboard</h1>
+    <button mat-icon-button (click)="cargarDatos()">
+      <mat-icon>refresh</mat-icon>
+    </button>
   </div>
 
-  <div class="stats-grid">
-    <div class="stat-card">
-      <h3>Total Prestado</h3>
-      <p class="stat-value">$0</p>
+  @if (loading()) {
+    <div class="loading">Cargando datos...</div>
+  }
+
+  @if (!loading()) {
+    <!-- KPIs -->
+    <div class="kpis-row">
+      <!-- KPI 1: Total Prestado -->
+      <div class="kpi-card">
+        <div class="kpi-icon">
+          <mat-icon>attach_money</mat-icon>
+        </div>
+        <div class="kpi-content">
+          <h3 class="kpi-label">Total Prestado</h3>
+          <p class="kpi-value">{{ formatearMoneda(totalPrestado()) }}</p>
+        </div>
+      </div>
+
+      <!-- KPI 2: Total Cobrado -->
+      <div class="kpi-card">
+        <div class="kpi-icon">
+          <mat-icon>payments</mat-icon>
+        </div>
+        <div class="kpi-content">
+          <h3 class="kpi-label">Total Cobrado</h3>
+          <p class="kpi-value">{{ formatearMoneda(totalCobrado()) }}</p>
+        </div>
+      </div>
+
+      <!-- KPI 3: Saldo Pendiente -->
+      <div class="kpi-card">
+        <div class="kpi-icon">
+          <mat-icon>account_balance_wallet</mat-icon>
+        </div>
+        <div class="kpi-content">
+          <h3 class="kpi-label">Saldo Pendiente</h3>
+          <p class="kpi-value">{{ formatearMoneda(totalPendiente()) }}</p>
+        </div>
+      </div>
+
+      <!-- KPI 4: Préstamos Activos -->
+      <div class="kpi-card">
+        <div class="kpi-icon">
+          <mat-icon>trending_up</mat-icon>
+        </div>
+        <div class="kpi-content">
+          <h3 class="kpi-label">Préstamos Activos</h3>
+          <p class="kpi-value">{{ prestamosActivos() }}</p>
+        </div>
+      </div>
     </div>
 
-    <div class="stat-card">
-      <h3>Total por cobrar</h3>
-      <p class="stat-value">$0</p>
+    <!-- Gráficos -->
+    <div class="charts-row">
+      <!-- Gráfico de Barras -->
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>Préstamos por Mes</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-container">
+            <canvas #graficoBarras></canvas>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Gráfico de Pastel -->
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>Estado de Préstamos</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="chart-container">
+            <canvas #graficoPastel></canvas>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
-    <div class="stat-card">
-      <h3>Prestamos activos</h3>
-      <p class="stat-value">$0</p>
-    </div>
-    <div class="stat-card">
-      <h3>Prestamos Vencidos</h3>
-      <p class="stat-value">$0</p>
-    </div>
-  </div>
+
+    <!-- Próximos Vencimientos -->
+    <mat-card class="list-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>notifications_active</mat-icon>
+          Próximos Vencimientos (7 días)
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        @if (proximosVencer().length === 0) {
+          <p class="empty-message">No hay préstamos por vencer pronto</p>
+        }
+
+        @if (proximosVencer().length > 0) {
+          <div class="prestamos-list">
+            @for (prestamo of proximosVencer(); track prestamo.id) {
+              <div class="prestamo-item">
+                <div class="prestamo-info">
+                  <strong>{{ prestamo.clienteNombre }}</strong>
+                  <span>{{ formatearMoneda(prestamo.saldoPendiente) }}</span>
+                </div>
+                <div class="prestamo-fecha">
+                  Vence: {{ prestamo.fechaVencimiento | date: "dd/MM/yyyy" }}
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+  }
 </div>

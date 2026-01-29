@@ -1,0 +1,173 @@
+.container {
+  padding: var(--spacing-md);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.loading {
+  text-align: center;
+  padding: var(--spacing-xl);
+}
+
+.prestamo-card,
+.pagos-card {
+  margin-bottom: var(--spacing-lg);
+}
+
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+// Estados
+.estado-chip {
+  &.activo {
+    background-color: #4caf50 !important;
+    color: white !important;
+  }
+
+  &.pagado {
+    background-color: #2196f3 !important;
+    color: white !important;
+  }
+
+  &.vencido {
+    background-color: #f44336 !important;
+    color: white !important;
+  }
+}
+
+// Secciones
+.section {
+  margin-bottom: var(--spacing-lg);
+
+  h3 {
+    color: #666;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: var(--spacing-md);
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: var(--spacing-sm);
+  }
+}
+
+// Grid de información
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--spacing-sm);
+  background: #f9f9f9;
+  border-radius: 4px;
+
+  .label {
+    color: #666;
+    font-weight: 500;
+  }
+
+  .value {
+    font-weight: bold;
+    color: #333;
+  }
+}
+
+// Resumen financiero
+.resumen {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: var(--spacing-lg);
+  border-radius: 8px;
+  color: white;
+
+  h3 {
+    color: white;
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+  }
+}
+
+.resumen-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+
+.resumen-item {
+  text-align: center;
+
+  .label {
+    display: block;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 12px;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .value {
+    display: block;
+    font-size: 24px;
+    font-weight: bold;
+
+    &.total {
+      color: #fff;
+    }
+
+    &.pagado {
+      color: #81c784;
+    }
+
+    &.pendiente {
+      color: #ffb74d;
+    }
+  }
+}
+
+// Tabla de pagos
+.table-container {
+  overflow-x: auto;
+}
+
+.metodo-chip {
+  font-size: 12px;
+  min-height: 24px;
+  padding: 4px 8px;
+}
+
+// Empty state
+.empty-state {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: #999;
+
+  mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    margin-bottom: var(--spacing-md);
+    opacity: 0.3;
+  }
+
+  p {
+    font-size: 18px;
+    margin-bottom: var(--spacing-md);
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .resumen-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}

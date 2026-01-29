@@ -115,7 +115,7 @@ export class FormularioClienteComponent {
       );
     } else {
       resultado = await this.clientesService.crearCliente(datosCliente);
-      console.log(resultado);
+      this.router.navigate(['/clientes']);
     }
     // TODO: Navegar a lista después de guardar
     // console.log(resultado);

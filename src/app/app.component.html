@@ -4,9 +4,25 @@
 
     @if (isLoggedIn()) {
       <nav>
-        <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
-        <a routerLink="/clientes" routerLinkActive="active">Clientes</a>
-        <a routerLink="/prestamos" routerLinkActive="active">Prestamos</a>
+        <a mat-button routerLink="/dashboard" routerLinkActive="active">
+          <mat-icon>dashboard</mat-icon>
+          <span class="link-text">Dashboard</span>
+        </a>
+
+        <a routerLink="/clientes" routerLinkActive="active">
+          <mat-icon>person</mat-icon>
+          <span class="link-text">Clientes</span>
+        </a>
+
+        <a routerLink="/prestamos" routerLinkActive="active">
+          <mat-icon>request_quote</mat-icon>
+          <span class="link-text">Préstamos</span>
+        </a>
+
+        <a mat-button routerLink="/reportes" routerLinkActive="active">
+          <mat-icon>assessment</mat-icon>
+          <span class="link-text">Reportes</span>
+        </a>
       </nav>
 
       <div class="user-info">

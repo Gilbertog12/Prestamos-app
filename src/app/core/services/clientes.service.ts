@@ -32,7 +32,11 @@ export class ClientesService {
   async crearCliente(cliente: Omit<cliente, 'id'>) {
     try {
       console.log(cliente.nombre);
-
+      if (this.clientes().find((c) => cliente.cedula === c.cedula)) {
+        alert('Usuario ya existe con este numero de cedula ');
+        this.loading.set(false);
+        return;
+      }
       const docRef = await addDoc(this.clienteCollection, {
         nombre: cliente.nombre,
         cedula: cliente.cedula,
@@ -43,6 +47,7 @@ export class ClientesService {
       console.log(docRef);
 
       console.log('Cliente creado con Id', docRef.id);
+      this.loading.set(false);
     } catch (error: any) {
       console.error('Error creando Cliente: ', error);
       // return { success: false, error: error.message };

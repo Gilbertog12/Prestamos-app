@@ -1,0 +1,51 @@
+.container {
+  padding: var(--spacing-md);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: var(--spacing-md);
+}
+
+.prestamo-info {
+  background: #f5f5f5;
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius);
+  margin-bottom: var(--spacing-lg);
+
+  h3 {
+    margin-top: 0;
+  }
+}
+
+.info-grid {
+  display: grid;
+  gap: var(--spacing-sm);
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+
+  .label {
+    color: #666;
+  }
+
+  .value {
+    font-weight: bold;
+
+    &.warning {
+      color: var(--color-warning);
+      font-size: 18px;
+    }
+  }
+}
+
+.button-row {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: flex-end;
+  margin-top: var(--spacing-lg);
+}
